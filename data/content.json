@@ -1,0 +1,68 @@
+{
+    "meta": {
+        "lastUpdated": "2024-01-15T10:30:00Z",
+        "version": "1.0",
+        "languages": ["bn", "en"],
+        "defaultLanguage": "bn",
+        "categories": [
+            {"id": "tech", "name": "প্রযুক্তি", "color": "#3b82f6"},
+            {"id": "politics", "name": "রাজনীতি", "color": "#dc2626"},
+            {"id": "sports", "name": "খেলাধুলা", "color": "#16a34a"}
+        ],
+        "tags": ["জাভাস্ক্রিপ্ট", "ওয়েব", "টিউটোরিয়াল", "খবর", "রাজনীতি", "ক্রিকেট"]
+    },
+    "translations": {
+        "bn": {
+            "siteTitle": "আমার নিউজ সাইট",
+            "nav": {"home": "হোম", "about": "আমাদের সম্পর্কে"}
+        },
+        "en": {
+            "siteTitle": "My News Site",
+            "nav": {"home": "Home", "about": "About Us"}
+        }
+    },
+    "posts": [
+        {
+            "id": "post-1",
+            "title": "প্রথম পোস্ট",
+            "translations": {
+                "bn": {
+                    "title": "প্রথম পোস্ট",
+                    "content": "এটি আমার প্রথম **ডাইনামিক** পোস্ট।\n\nGitHub Pages দিয়ে তৈরি।"
+                },
+                "en": {
+                    "title": "First Post",
+                    "content": "This is my first **dynamic** post.\n\nBuilt with GitHub Pages."
+                }
+            },
+            "category": "tech",
+            "date": "2024-01-15",
+            "published": true,
+            "status": "published",
+            "tags": ["জাভাস্ক্রিপ্ট", "ওয়েব"],
+            "image": "assets/images/sample.jpg",
+            "author": "অ্যাডমিন"
+        },
+        {
+            "id": "post-2",
+            "title": "দ্বিতীয় পোস্ট",
+            "translations": {
+                "bn": {
+                    "title": "দ্বিতীয় পোস্ট",
+                    "content": "আরেকটি টেস্ট পোস্ট।"
+                }
+            },
+            "category": "politics",
+            "date": "2024-01-14",
+            "published": true,
+            "status": "published",
+            "tags": ["খবর", "রাজনীতি"]
+        }
+    ],
+    "settings": {
+        "siteTitle": "আমার নিউজ সাইট",
+        "postsPerPage": 10,
+        "enableComments": true,
+        "enableSubscriptions": true
+    }
+}
