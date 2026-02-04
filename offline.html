@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <title>অফলাইন</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background: #f8fafc;
+            text-align: center;
+        }
+        .container { padding: 2rem; }
+        .icon { font-size: 4rem; margin-bottom: 1rem; }
+        h1 { color: #1e293b; }
+        p { color: #64748b; margin-bottom: 1.5rem; }
+        button {
+            padding: 0.75rem 1.5rem;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">📴</div>
+        <h1>আপনি অফলাইন</h1>
+        <p>ইন্টারনেট কানেকশন চেক করুন</p>
+        <button onclick="window.location.reload()">আবার চেষ্টা করুন</button>
+    </div>
+</body>
+</html>
