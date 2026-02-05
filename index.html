@@ -1,202 +1,220 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Site</title>
-    <style>
-        :root {
-            --primary: #2563eb;
-            --bg: #ffffff;
-            --text: #1e293b;
-            --gray: #64748b;
-            --border: #e2e8f0;
-        }
-        
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.6;
-            color: var(--text);
-            background: var(--bg);
-        }
-        
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 2rem 1rem;
-        }
-        
-        header {
-            text-align: center;
-            padding: 3rem 0;
-            border-bottom: 1px solid var(--border);
-            margin-bottom: 3rem;
-        }
-        
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .subtitle {
-            color: var(--gray);
-            font-size: 1.125rem;
-        }
-        
-        .post-card {
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: 0.75rem;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            transition: box-shadow 0.2s;
-        }
-        
-        .post-card:hover {
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
-        }
-        
-        .post-title {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-            color: var(--text);
-        }
-        
-        .post-meta {
-            color: var(--gray);
-            font-size: 0.875rem;
-            margin-bottom: 1rem;
-        }
-        
-        .post-category {
-            display: inline-block;
-            background: #eff6ff;
-            color: var(--primary);
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-left: 0.5rem;
-        }
-        
-        .post-content {
-            line-height: 1.7;
-        }
-        
-        .post-tags {
-            margin-top: 1rem;
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-        
-        .tag {
-            background: #f1f5f9;
-            color: var(--gray);
-            padding: 0.25rem 0.5rem;
-            border-radius: 0.25rem;
-            font-size: 0.75rem;
-        }
-        
-        .loading {
-            text-align: center;
-            padding: 3rem;
-            color: var(--gray);
-        }
-        
-        .refresh-btn {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: var(--primary);
-            color: white;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-            font-size: 1.25rem;
-            transition: transform 0.2s;
-        }
-        
-        .refresh-btn:hover {
-            transform: scale(1.1);
-        }
-        
-        .refresh-btn.spinning {
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        
-        footer {
-            text-align: center;
-            padding: 3rem 0;
-            color: var(--gray);
-            border-top: 1px solid var(--border);
-            margin-top: 3rem;
-        }
-    </style>
+    <title>আমার নিউজ সাইট</title>
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- এরর ডিটেকশন -->
+    <script>
+        window.onerror = function(msg, url, line) {
+            console.error('Error:', msg, 'at line', line);
+            return false;
+        };
+    </script>
 </head>
 <body>
-<script src="js/main.js"></script>
-<header>
-    <h1 id="site-title">Loading...</h1>
-    <p class="subtitle">Dynamic Content on Static Hosting</p>
-</header>
+    <header>
+        <div class="container">
+            <h1 id="site-title">আমার নিউজ সাইট</h1>
+            <nav>
+                <a href="#" onclick="showHome()">হোম</a>
+                <a href="#" onclick="showAbout()">আমাদের সম্পর্কে</a>
+                <a href="./admin/">অ্যাডমিন</a>
+            </nav>
+        </div>
+    </header>
 
-<div class="container">
-    <div id="posts-container">
-        <div class="loading">Loading posts...</div>
-    </div>
-</div>
+    <main class="container">
+        <div class="filter-bar">
+            <input type="text" id="search-input" placeholder="খুঁজুন..." onkeyup="handleSearch()">
+            <select id="category-filter" onchange="applyFilters()">
+                <option value="">সব ক্যাটাগরি</option>
+            </select>
+        </div>
 
-<button class="refresh-btn" onclick="refreshContent()" title="Refresh content">↻</button>
+        <div id="posts-container">
+            <div class="loading">লোড হচ্ছে...</div>
+        </div>
+    </main>
 
-<footer>
-    <p>Powered by GitHub Pages • <a href="./admin/">Admin Panel</a></p>
-</footer>
+    <footer>
+        <p>&copy; ২০২৪ আমার নিউজ সাইট</p>
+    </footer>
 
-<script>
-// Initialize site
-async function init() {
-    const data = await contentManager.loadContent();
-    
-    // Update site title
-    if (data.settings?.siteTitle) {
-        document.getElementById('site-title').textContent = data.settings.siteTitle;
-        document.title = data.settings.siteTitle;
-    } else {
-        document.getElementById('site-title').textContent = 'My Dynamic Site';
-    }
-    
-    // Render posts
-    await contentManager.renderPosts('posts-container');
-    
-    // Start auto-refresh for "live" feel
-    contentManager.startAutoRefresh(async (newData) => {
-        await contentManager.renderPosts('posts-container');
-        console.log('Content auto-refreshed');
-    });
-}
+    <!-- সব JS ফাইল একসাথে -->
+    <script>
+        // ==========================================
+        // i18n.js - ভাষা ম্যানেজার
+        // ==========================================
+        class I18nManager {
+            constructor() {
+                this.currentLang = localStorage.getItem('language') || 'bn';
+            }
+            
+            getPostContent(post) {
+                return post.translations?.[this.currentLang] || post;
+            }
+        }
+        
+        const i18n = new I18nManager();
 
-async function refreshContent() {
-    const btn = document.querySelector('.refresh-btn');
-    btn.classList.add('spinning');
-    
-    await contentManager.renderPosts('posts-container', { force: true });
-    
-    setTimeout(() => btn.classList.remove('spinning'), 500);
-}
+        // ==========================================
+        // filters.js - ফিল্টার ম্যানেজার
+        // ==========================================
+        class FilterManager {
+            constructor() {
+                this.filters = { search: '', category: '' };
+            }
+            
+            init(data) {
+                this.allPosts = data.posts || [];
+                const catSelect = document.getElementById('category-filter');
+                const categories = [
+                    { id: 'tech', name: 'প্রযুক্তি' },
+                    { id: 'politics', name: 'রাজনীতি' },
+                    { id: 'sports', name: 'খেলাধুলা' }
+                ];
+                
+                categories.forEach(cat => {
+                    const option = document.createElement('option');
+                    option.value = cat.id;
+                    option.textContent = cat.name;
+                    catSelect.appendChild(option);
+                });
+            }
+            
+            setSearch(query) {
+                this.filters.search = query.toLowerCase();
+                this.applyFilters();
+            }
+            
+            setCategory(cat) {
+                this.filters.category = cat;
+                this.applyFilters();
+            }
+            
+            applyFilters() {
+                let filtered = this.allPosts.filter(post => {
+                    if (post.published === false) return false;
+                    
+                    if (this.filters.search) {
+                        const title = (post.translations?.bn?.title || post.title).toLowerCase();
+                        if (!title.includes(this.filters.search)) return false;
+                    }
+                    
+                    if (this.filters.category && post.category !== this.filters.category) {
+                        return false;
+                    }
+                    
+                    return true;
+                });
+                
+                renderResults(filtered);
+            }
+        }
+        
+        const filter = new FilterManager();
 
-// Run on load
-init();
-</script>
+        function handleSearch() {
+            const query = document.getElementById('search-input').value;
+            filter.setSearch(query);
+        }
+
+        function applyFilters() {
+            const cat = document.getElementById('category-filter').value;
+            filter.setCategory(cat);
+        }
+
+        function renderResults(posts) {
+            const container = document.getElementById('posts-container');
+            
+            if (posts.length === 0) {
+                container.innerHTML = '<div class="no-results">কোনো পোস্ট পাওয়া যায়নি</div>';
+                return;
+            }
+            
+            container.innerHTML = posts.map(post => {
+                const content = i18n.getPostContent(post);
+                return `
+                    <article class="post-card" data-id="${post.id}">
+                        <h2 class="post-title">${content.title || post.title}</h2>
+                        <div class="post-meta">
+                            <span class="post-category">${post.category || 'অজানা'}</span>
+                            <span>${post.date || ''}</span>
+                        </div>
+                        <div class="post-content">${content.content || ''}</div>
+                    </article>
+                `;
+            }).join('');
+        }
+
+        // ==========================================
+        // main.js - মূল কন্টেন্ট ম্যানেজার
+        // ==========================================
+        class ContentManager {
+            constructor() {
+                this.data = null;
+                this.basePath = 'https://sabbir128.github.io/world-news-pro/';
+            }
+            
+            async loadContent() {
+                try {
+                    const url = this.basePath + 'data/content.json?t=' + Date.now();
+                    console.log('Fetching:', url);
+                    
+                    const response = await fetch(url);
+                    
+                    if (!response.ok) {
+                        throw new Error('HTTP ' + response.status);
+                    }
+                    
+                    this.data = await response.json();
+                    console.log('Loaded posts:', this.data.posts?.length);
+                    return this.data;
+                    
+                } catch (error) {
+                    console.error('Error:', error);
+                    document.getElementById('posts-container').innerHTML = 
+                        '<div style="text-align:center;padding:2rem;color:red;">ত্রুটি: ' + error.message + '</div>';
+                    return { posts: [] };
+                }
+            }
+            
+            async renderPosts(containerId) {
+                const data = await this.loadContent();
+                
+                // ফিল্টার ইনিশিয়ালাইজ
+                filter.init(data);
+                
+                // সব পোস্ট দেখান
+                const published = data.posts?.filter(p => p.published !== false) || [];
+                renderResults(published);
+                
+                // সাইট টাইটেল আপডেট
+                if (data.settings?.siteTitle) {
+                    document.getElementById('site-title').textContent = data.settings.siteTitle;
+                    document.title = data.settings.siteTitle;
+                }
+            }
+        }
+        
+        const contentManager = new ContentManager();
+
+        // অটো স্টার্ট
+        document.addEventListener('DOMContentLoaded', () => {
+            contentManager.renderPosts('posts-container');
+        });
+
+        function showHome() {
+            location.reload();
+        }
+
+        function showAbout() {
+            alert('আমাদের সম্পর্কে পেজ শীঘ্রই আসছে');
+        }
+    </script>
 </body>
-</html>
+    </html>
+    
